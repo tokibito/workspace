@@ -9,4 +9,9 @@ Vagrant.configure("2") do |config|
     vb.memory = "2048"
   end
   config.ssh.forward_agent = true
+  config.vm.provision :shell, inline:<<-EOS
+    add-apt-repository -y ppa:fkrull/deadsnakes
+    apt-get update
+    apt-get install -y python3.6 python3.6-dev python3.6-venv build-essential
+  EOS
 end
