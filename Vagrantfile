@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "#{Dir.home}/work", "/work"
   config.vm.provision :shell, inline:<<-EOS
     # Add deadsnakes repository
+    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 5BB92C09DB82666C
     add-apt-repository -y ppa:fkrull/deadsnakes
 
     # Add Google Cloud SDK Repository
@@ -22,12 +23,23 @@ Vagrant.configure("2") do |config|
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
     # Update package list
-    apt-get update
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update --allow-unauthenticated
 
     # Generic development
     apt-get install -y \
       tree \
-      build-essential
+      zip \
+      unzip \
+      build-essential \
+      language-pack-ja-base \
+      language-pack-ja
+
+    # Japanese locale
+    update-locale LANG=ja_JP.UTF-8
+
+    # Set timezone
+    timedatectl set-timezone Asia/Tokyo
 
     # Python development
     apt-get install -y \
@@ -70,10 +82,16 @@ Vagrant.configure("2") do |config|
       mysql-client \
       libmysqlclient-dev
 
-    # Google Cloud SQL Proxy
-    if [ ! -e '/usr/local/bin/cloud_sql_proxy' ]; then
-      wget -q https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/local/bin/cloud_sql_proxy
-      chmod +x /usr/local/bin/cloud_sql_proxy
+    # ngrok
+    if [ ! -e /usr/local/bin/ngrok ]; then
+      wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -O /tmp/ngrok-stable-linux-amd64.zip
+      unzip -o /tmp/ngrok-stable-linux-amd64.zip -d /usr/local/bin/
     fi
+
+    # Google Cloud SQL Proxy
+    # if [ ! -e '/usr/local/bin/cloud_sql_proxy' ]; then
+    #   wget -q https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/local/bin/cloud_sql_proxy
+    #   chmod +x /usr/local/bin/cloud_sql_proxy
+    # fi
   EOS
 end
