@@ -11,8 +11,7 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "#{Dir.home}/work", "/work"
   config.vm.provision :shell, inline:<<-EOS
     # Add deadsnakes repository
-    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 5BB92C09DB82666C
-    add-apt-repository -y ppa:fkrull/deadsnakes
+    add-apt-repository -y ppa:deadsnakes/ppa
 
     # Add Google Cloud SDK Repository
     export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
@@ -43,9 +42,9 @@ Vagrant.configure("2") do |config|
 
     # Python development
     apt-get install -y \
-      python3.6 \
-      python3.6-dev \
-      python3.6-venv
+      python3.7 \
+      python3.7-dev \
+      python3.7-venv
 
     # NodeJS development
     apt-get install -y nodejs
