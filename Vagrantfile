@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
@@ -44,7 +44,10 @@ Vagrant.configure("2") do |config|
     apt-get install -y \
       python3.7 \
       python3.7-dev \
-      python3.7-venv
+      python3.7-venv \
+      python3.8 \
+      python3.8-dev \
+      python3.8-venv
 
     # NodeJS development
     apt-get install -y nodejs
