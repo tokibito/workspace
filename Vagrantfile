@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
       libffi-dev \
       libjpeg-dev \
       libmysqlclient-dev \
-      libpng12-dev \
+      libpng-dev \
       libpq-dev \
       libsqlite3-dev \
       libssl-dev \
