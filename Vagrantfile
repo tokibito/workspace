@@ -2,12 +2,13 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "ubuntu/jammy64"
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = "4096"
   end
   config.ssh.forward_agent = true
+  # config.disksize.size = "40GB"
   # config.vm.synced_folder "#{Dir.home}/work", "/work"
   config.vm.provision :shell, inline:<<-EOS
     # Add deadsnakes repository
@@ -19,7 +20,7 @@ Vagrant.configure("2") do |config|
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
     # Add NodeJS repository
-    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
     # Update package list
     export DEBIAN_FRONTEND=noninteractive
@@ -42,12 +43,9 @@ Vagrant.configure("2") do |config|
 
     # Python development
     apt-get install -y \
-      python3.7 \
-      python3.7-dev \
-      python3.7-venv \
-      python3.8 \
-      python3.8-dev \
-      python3.8-venv
+      python3.9 \
+      python3.9-dev \
+      python3.9-venv
 
     # NodeJS development
     apt-get install -y nodejs
@@ -85,10 +83,7 @@ Vagrant.configure("2") do |config|
       libmysqlclient-dev
 
     # ngrok
-    if [ ! -e /usr/local/bin/ngrok ]; then
-      wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -O /tmp/ngrok-stable-linux-amd64.zip
-      unzip -o /tmp/ngrok-stable-linux-amd64.zip -d /usr/local/bin/
-    fi
+    # curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
 
     # Google Cloud SQL Proxy
     # if [ ! -e '/usr/local/bin/cloud_sql_proxy' ]; then
